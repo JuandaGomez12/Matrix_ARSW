@@ -40,7 +40,7 @@ Requirements: Java Development Kit 8 or higher.
 
 Compile
 ```
-javac -d out src/domain/*.java
+javac -d out img/*.java
 ```
 
 Run
@@ -60,7 +60,7 @@ Each round advances by pressing Enter. The game ends when Neo reaches the Phone 
 
 The Matrix1 class implements the Singleton pattern via getInstance(), ensuring that only one instance of the game board exists throughout the entire execution. All threads, both Neo and every Agent, operate on this single shared matrix. Without this pattern each thread would work on its own board copy, making coordination impossible.
 
-![Singleton](src/domain/GetIntance.png)
+![Singleton](img/GetIntance.png)
 
 ### 2. Observer
 
@@ -76,27 +76,27 @@ Matrix1 acts as the Subject: it maintains a list of GameObserver listeners and c
 
 The key benefit is decoupling: Matrix1 does not know who listens to its events. Any number of observers (a GUI, a file logger, a test monitor) can be registered via addObserver() without modifying the game logic.
 
-![GameObserver interface](src/domain/GameObserver.png)
+![GameObserver interface](img/GameObserver.png)
 
-![GameLogger concrete observer](src/domain/GameLogger.png)
+![GameLogger concrete observer](img/GameLogger.png)
 
-![Observer notifications](src/domain/Observer.png)
+![Observer notifications](img/Observer.png)
 
 ### 3. Barrier Synchronization (CyclicBarrier)
 
 In a concurrent simulation like this one, nothing guarantees that all threads advance at the same pace. Without a synchronization point, a fast thread can execute multiple moves before a slower one executes even one, making the simulation unfair and the board state inconsistent. The CyclicBarrier solves this by acting as a meeting point for all 1 + N threads at the end of every round, so no thread is allowed to start the next round until every other thread has finished its current move. When the last thread arrives at the barrier, the barrier action fires: it shows the updated board and waits for Enter, then all threads are released simultaneously. This guarantees that each round reflects the contribution of every thread before the game state is evaluated.
 
-![CyclicBarrier](src/domain/Cyclic.png)
+![CyclicBarrier](img/Cyclic.png)
 
 ## Verification
 
 Neo wins when he reaches the Phone.
 
-![Win](src/domain/Win.png)
+![Win](img/Win.png)
 
 An Agent catches Neo and the game ends.
 
-![Lose](src/domain/Lose.png)
+![Lose](img/Lose.png)
 
 ## Conclusions
 
